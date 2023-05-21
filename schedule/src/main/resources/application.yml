@@ -1,0 +1,31 @@
+mysql-server-addr: localhost
+mysql-server-port: 3306
+redis-server-addr: localhost
+redis-server-port: 6379
+server:
+  port: 8084
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  resources:
+    static-locations: [classpath:/static/]
+  datasource:
+    url: jdbc:mysql://${mysql-server-addr}:${mysql-server-port}/production_ssm?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: Zmzzmz010627!
+    driver-class-name: com.mysql.jdbc.Driver
+  application:
+    name: scheduleservice
+  redis:
+    host: ${redis-server-addr}
+    port: ${redis-server-port}
+mybatis:
+  type-aliases-package: org.ISCS.domain.plan
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis-config.xml
+
+my:
+  global:
+    address: http://${nacos-server-addr}:${server.port}

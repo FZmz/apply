@@ -1,0 +1,6 @@
+nacos-server-addr: 39.104.112.98
+nacos-server-port: 8848
+spring:
+  cloud:
+    nacos:
+      server-addr: ${nacos-server-addr}:${nacos-server-port} #nacos服务地址

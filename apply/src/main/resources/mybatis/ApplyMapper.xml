@@ -1,0 +1,56 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ISCS.mapper.ApplyMapper" >
+    <resultMap id="BaseResultMap" type="org.ISCS.domain.Apply" >
+        <id column="apply_id" property="applyId" jdbcType="INTEGER" />
+        <result column="apply_module" property="applyModule" jdbcType="VARCHAR" />
+        <result column="apply_route" property="applyRoute" jdbcType="VARCHAR" />
+        <result column="apply_type" property="applyType" jdbcType="INTEGER" />
+        <result column="apply_data" property="applyData" jdbcType="VARCHAR" />
+        <result column="apply_status" property="applyStatus" jdbcType="INTEGER" />
+        <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <!--   新增申请记录  -->
+    <insert id="insertApply" parameterType="org.ISCS.domain.Apply" >
+        insert into apply (apply_module, apply_route,
+                                  apply_type, apply_data, apply_status,apply_date
+        )
+        values (#{applyModule,jdbcType=VARCHAR}, #{applyRoute,jdbcType=VARCHAR},
+                #{applyType,jdbcType=INTEGER}, #{applyData,jdbcType=VARCHAR}, #{applyStatus,jdbcType=INTEGER}, #{applyDate,jdbcType=TIMESTAMP}
+               )
+    </insert>
+    <!--  修改申请状态  -->
+    <update id="updateApplyStatus" parameterType="org.ISCS.domain.Apply" >
+        UPDATE apply
+        SET apply_status = #{applyStatus}
+        WHERE
+            apply_id = #{applyId,jdbcType=VARCHAR}
+    </update>
+    <!-- 构建动态sql  查询所有申请记录，根据apply_type,apply_module,apply_status  -->
+    <select id="getApplyListByRes" parameterType="org.ISCS.domain.Apply" resultMap="BaseResultMap">
+        SELECT * from apply
+        <where>
+            <if test="applyType != 0">
+                and apply_type = #{applyType,jdbcType=INTEGER}
+            </if>
+            <if test="applyModule != 'All'">
+                and apply_module = #{applyModule,jdbcType=VARCHAR}
+            </if>
+            <if test="applyStatus != 0">
+                and apply_status = #{applyStatus,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+    <!--    查询所有申请记录  -->
+    <select id="getApplyList" resultMap="BaseResultMap">
+        SELECT * from apply
+    </select>
+
+    <select id="getApplyInfoById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            apply
+        WHERE
+            apply_id = #{applyId,jdbcType=INTEGER}
+    </select>
+</mapper>
